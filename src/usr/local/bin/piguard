@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PI_GUARD_OPT_DIR="/opt/piguard"
+export PI_GUARD_OPT_DIR
+
+PI_GUARD_ETC_DIR="/etc/piguard"
+export PI_GUARD_ETC_DIR
+
+PI_GUARD_GIT_DIR="/etc/.piguard"
+export PI_GUARD_GIT_DIR
+
+PI_GUARD_LIST_DIR="${PI_GUARD_ETC_DIR}/lists"
+export PI_GUARD_LIST_DIR
+
+PI_GUARD_CONFIG_DIR="${PI_GUARD_ETC_DIR}/config"
+export PI_GUARD_CONFIG_DIR
+
+PI_GUARD_SOURCE_FILE="${PI_GUARD_ETC_DIR}/source.list"
+export PI_GUARD_SOURCE_FILE
+
+PI_GUARD_LOG_FILE="/var/log/piguard/piguard.log"
+export PI_GUARD_LOG_FILE
+
+PI_GUARD_SUDO="$(sh -c "if [ 0 != \"${EUID}\" ]; then echo 'sudo'; fi")"
+export PI_GUARD_SUDO
+
+versionFunc() {
+  shift
+  "${PI_GUARD_OPT_DIR}"/version.sh "$@"
+  exit 0
+  exit 0
+}
+
+updateFunc() {
+  shift
+  "${PI_GUARD_OPT_DIR}"/update.sh "$@"
+  exit 0
+}
+
+reloadFunc() {
+  shift
+  "${PI_GUARD_OPT_DIR}"/reload.sh "$@"
+  exit 0
+}
+
+fetchFunc() {
+  shift
+  "${PI_GUARD_OPT_DIR}"/fetch.sh "$@"
+  exit 0
+}
+
+dnsmasqFunc() {
+  shift
+  "${PI_GUARD_OPT_DIR}"/dnsmasq.sh "$@"
+  exit 0
+}
+
+iptablesFunc() {
+  shift
+  "${PI_GUARD_OPT_DIR}"/iptables.sh "$@"
+  exit 0
+}
+
+helpFunc() {
+  echo "Usage: piguard [options]
+Example: 'piguard -h'
+Add '-h' after specific commands for more information on usage
+
+Options:
+  -v, version         Show installed version of Pi-guard
+  -u, update          Update Pi-guard to latest version
+  -r, reload          Reload Pi-guard configuration
+  -f, fetch           Fetch lists
+  dnsmasq             Configure dnsmasq rules
+  iptables            Configure iptables rules";
+  exit 0
+}
+
+if [[ $# = 0 ]]; then
+  helpFunc
+fi
+
+case "${1}" in
+  "update"                      ) updateFunc "$@";;
+  "reload"                      ) reloadFunc "$@";;
+  "fetch"                       ) fetchFunc "$@";;
+  "dnsmasq"                     ) dnsmasqFunc "$@";;
+  "iptables"                    ) iptablesFunc "$@";;
+  "-v" | "version"              ) versionFunc "$@";;
+  "-h" | "help"                 ) helpFunc;;
+  *                             ) helpFunc;;
+esac

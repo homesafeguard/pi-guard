@@ -1,0 +1,8 @@
+# Pi-guard: Safe network for home
+# (c) 2021 Pi-guard (https://github.com/homesafeguard/pi-guard)
+
+# Pi-guard: Night shutdown (energy saving)
+45  23  *   *   *   root    PATH="$PATH:/usr/sbin:/usr/local/bin/" piguard shutdown
+
+# Pi-guard: Self-update
+45  6   *   *   *   root    PATH="$PATH:/usr/sbin:/usr/local/bin/" piguard update

@@ -104,3 +104,28 @@ wget_files() {
     wget_file "${url}" "${dest}"
   done < "${file}"
 }
+
+since_time() {
+  local seconds="${1}"
+
+  if [ $(( seconds/60 )) = 0 ]; then
+    echo "$seconds sec."
+
+  elif [ $(( seconds%60 )) = 0 ]; then
+    echo "$((seconds/60)) min."
+
+  elif [ $(( seconds%60%60 )) = 0 ]; then
+    echo "$((seconds/60/60)) h"
+
+  elif [ $((seconds/60/60)) = 0 ]; then
+    echo "$((seconds/60%60)) min. $((seconds%60)) sec."
+
+  else
+    echo "$((seconds/60/60)) h $((seconds/60%60)) min. $((seconds%60)) sec."
+
+  fi
+}
+
+number_format () {
+  printf "%s" "${1}" | sed ':a;s/\B[0-9]\{3\}\>/ &/;ta'
+}

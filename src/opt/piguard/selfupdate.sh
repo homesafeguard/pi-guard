@@ -45,5 +45,5 @@ Update Pi-guard
 
 case "${1:-}" in
   "-h" | "--help"      ) helpFunc;;
-  *                    ) updateFunc "$@";;
+  *                    ) selfupdateFunc "$@";;
 esac

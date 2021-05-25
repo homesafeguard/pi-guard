@@ -1,19 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-. "${PI_GUARD_OPT_DIR}/helpers.sh"
+. "${PI_GUARD_OPT_DIR}/lib/helpers.sh"
 
-reloadFunc() {
-  local message="Update piguard system files"
-  print_title "${message}"
-  print_textnl "$(cd "${PI_GUARD_GIT_DIR}/src" && find . -type f ! -name ".gitignore" | sed 's/^\.\(.*\)$/ - \1/g')"
-  ${PI_GUARD_SUDO} cp -frT "${PI_GUARD_GIT_DIR}/src" /
-  ${PI_GUARD_SUDO} chown -R pi:pi "${PI_GUARD_ETC_DIR}"
-  ${PI_GUARD_SUDO} chown -R pi:pi "${PI_GUARD_LOG_FILE}"
-  print_log "reload" "INFO" "${message}"
-
-  piguard iptables
-  piguard dnsmasq
+restartFunc() {
+  piguard iptables --restart
+  piguard dnsmasq --restart
 
   return 0
 }

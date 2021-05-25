@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-. "${PI_GUARD_OPT_DIR}/helpers.sh"
+. "${PI_GUARD_OPT_DIR}/lib/helpers.sh"
 
 fetchFunc() {
   local message="Fetch list"

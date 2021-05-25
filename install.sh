@@ -29,8 +29,14 @@ ${PI_GUARD_SUDO} /opt/dnscrypt-proxy/dnscrypt-proxy -service install
 ${PI_GUARD_SUDO} /opt/dnscrypt-proxy/dnscrypt-proxy -service start
 
 ## Start dnsmasq
-${PI_GUARD_SUDO} systemctl daemon-reload
 ${PI_GUARD_SUDO} systemctl restart dnsmasq
+
+## Enable service
+${PI_GUARD_SUDO} chmod 0755 /etc/init.d/piguard
+${PI_GUARD_SUDO} update-rc.d piguard defaults
+
+## Restart daemon
+${PI_GUARD_SUDO} systemctl daemon-reload
 
 ## Restart syslog
 ${PI_GUARD_SUDO} systemctl restart rsyslog

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-. "${PI_GUARD_OPT_DIR}/helpers.sh"
+. "${PI_GUARD_OPT_DIR}/lib/helpers.sh"
 
 readonly PI_GUARD_LIST_DIR="${PI_GUARD_LIST_DIR:?}/iptables"
 
@@ -77,8 +77,8 @@ iptablesGenerateRules() {
   return 0
 }
 
-iptablesGenerate() {
-  local message="Generate iptables rules"
+iptablesConfigure() {
+  local message="Configure iptables rules"
   print_title "${message}"
   rm -f "${PI_GUARD_IPSET_GENERATED_FILE}"
   rm -f "${PI_GUARD_IPTABLES_GENERATED_FILE}"
@@ -129,23 +129,26 @@ iptablesReload() {
   return 0
 }
 
-iptablesFunc() {
-  iptablesGenerate
+iptablesRestart() {
+  iptablesConfigure
   iptablesReload
 
   return 0
 }
 
 helpFunc() {
-  echo "Usage: piguard iptables
-Configure iptables rules
+  echo "Usage: piguard iptables --restart
+Manage iptables
   -h, --help           Show this help dialog
-  iptables             Configure iptables rules";
+  --configure          Configure iptables rules
+  --reload             Reload iptables
+  --restart            Configure and reload iptables";
   exit 0
 }
 
 case "${2:-}" in
-  "-h" | "--help"      ) helpFunc;;
-  "-r" | "--reload"    ) iptablesReload "$@";;
-  *                    ) iptablesFunc "$@";;
+  "--configure"        ) iptablesConfigure "$@";;
+  "--reload"           ) iptablesReload "$@";;
+  "--restart"          ) iptablesRestart "$@";;
+  *                    ) helpFunc "$@";;
 esac

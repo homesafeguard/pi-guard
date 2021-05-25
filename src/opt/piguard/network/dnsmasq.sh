@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-. "${PI_GUARD_OPT_DIR}/helpers.sh"
+. "${PI_GUARD_OPT_DIR}/lib/helpers.sh"
 
 PI_GUARD_DNSMASQ_FILE="/etc/dnsmasq.d/piguard.conf"
 PI_GUARD_DNSMASQ_LIST_DIR="${PI_GUARD_LIST_DIR:?}/dnsmasq"
@@ -29,8 +29,8 @@ dnsmasqGenerateRules() {
   return 0
 }
 
-dnsmasqGenerate() {
-  local message="Generate dnsmasq rules"
+dnsmasqConfigure() {
+  local message="Configure dnsmasq rules"
   print_title "${message}"
   rm -f "${PI_GUARD_DNSMASQ_GENERATED_FILE:?}"
 
@@ -59,23 +59,26 @@ dnsmasqReload () {
   return 0
 }
 
-dnsmasqFunc() {
-  dnsmasqGenerate
+dnsmasqRestart() {
+  dnsmasqConfigure
   dnsmasqReload
 
   return 0
 }
 
 helpFunc() {
-  echo "Usage: piguard dnsmasq
-Configure dnsmasq rules
+  echo "Usage: piguard dnsmasq --restart
+Manage dnsmasq
   -h, --help           Show this help dialog
-  dnsmasq             Configure dnsmasq rules";
+  --configure          Configure dnsmasq rules
+  --reload             Reload dnsmasq
+  --restart            Configure and reload dnsmasq";
   exit 0
 }
 
 case "${2:-}" in
-  "-h" | "--help"      ) helpFunc;;
-  "-r" | "--reload"    ) dnsmasqReload "$@";;
-  *                    ) dnsmasqFunc "$@";;
+  "--configure"        ) dnsmasqConfigure "$@";;
+  "--reload"           ) dnsmasqReload "$@";;
+  "--restart"          ) dnsmasqRestart "$@";;
+  *                    ) helpFunc "$@";;
 esac

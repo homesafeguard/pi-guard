@@ -76,7 +76,7 @@ Manage dnsmasq
   exit 0
 }
 
-case "${1}" in
+case "${1:-}" in
   "--configure"        ) dnsmasqConfigure "$@";;
   "--reload"           ) dnsmasqReload "$@";;
   "--restart"          ) dnsmasqRestart "$@";;

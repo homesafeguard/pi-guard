@@ -104,7 +104,7 @@ if [[ $# = 0 ]]; then
   helpFunc
 fi
 
-case "${1}" in
+case "${1:-}" in
   "self-update"                 ) selfupdateFunc "$@";;
   "selfupdate"                  ) selfupdateFunc "$@";;
   "reload"                      ) reloadFunc "$@";;

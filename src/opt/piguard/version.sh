@@ -43,7 +43,7 @@ Version of Pi-guard
   exit 0
 }
 
-case "${1}" in
+case "${1:-}" in
   "-h" | "--help"      ) helpFunc;;
   *                    ) versionFunc "$@";;
 esac

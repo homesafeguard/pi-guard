@@ -18,7 +18,7 @@ Reload Pi-guard
   exit 0
 }
 
-case "${2:-}" in
+case "${1}" in
   "-h" | "--help"      ) helpFunc;;
   *                    ) reloadFunc "$@";;
 esac

@@ -1,0 +1,6 @@
+/var/log/piguard/*.log {
+    daily
+    compress
+    delaycompress
+    rotate 3
+}

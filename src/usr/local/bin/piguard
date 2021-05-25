@@ -76,6 +76,12 @@ dnsUptimeFunc() {
   exit 0
 }
 
+statsFunc() {
+  shift
+  "${PI_GUARD_OPT_DIR}"/uptime/stats.sh "$@"
+  exit 0
+}
+
 helpFunc() {
   echo "Usage: piguard [options]
 Example: 'piguard -h'
@@ -88,6 +94,7 @@ Options:
   fetch               Fetch lists
   dnsmasq             Manage dnsmasq
   iptables            Manage iptables
+  stats               Stats
   network-uptime      Check network uptime
   dns-uptime          Check DNS uptime";
   exit 0
@@ -104,6 +111,7 @@ case "${1}" in
   "fetch"                       ) fetchFunc "$@";;
   "dnsmasq"                     ) dnsmasqFunc "$@";;
   "iptables"                    ) iptablesFunc "$@";;
+  "stats"                       ) statsFunc "$@";;
   "network-uptime"              ) networkUptimeFunc "$@";;
   "dns-uptime"                  ) dnsUptimeFunc "$@";;
   "-v" | "version"              ) versionFunc "$@";;

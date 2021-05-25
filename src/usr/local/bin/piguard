@@ -64,15 +64,15 @@ iptablesFunc() {
   exit 0
 }
 
-networkUptimeFunc() {
+networkFunc() {
   shift
-  "${PI_GUARD_OPT_DIR}"/uptime/network.sh "$@"
+  "${PI_GUARD_OPT_DIR}"/network/network.sh "$@"
   exit 0
 }
 
-dnsUptimeFunc() {
+dnsFunc() {
   shift
-  "${PI_GUARD_OPT_DIR}"/uptime/dns.sh "$@"
+  "${PI_GUARD_OPT_DIR}"/network/dns.sh "$@"
   exit 0
 }
 
@@ -95,8 +95,8 @@ Options:
   dnsmasq             Manage dnsmasq
   iptables            Manage iptables
   stats               Stats
-  network-uptime      Check network uptime
-  dns-uptime          Check DNS uptime";
+  network             Check network uptime
+  dns                 Check DNS uptime";
   exit 0
 }
 
@@ -112,8 +112,8 @@ case "${1:-}" in
   "dnsmasq"                     ) dnsmasqFunc "$@";;
   "iptables"                    ) iptablesFunc "$@";;
   "stats"                       ) statsFunc "$@";;
-  "network-uptime"              ) networkUptimeFunc "$@";;
-  "dns-uptime"                  ) dnsUptimeFunc "$@";;
+  "network"                     ) networkFunc "$@";;
+  "dns"                         ) dnsFunc "$@";;
   "-v" | "version"              ) versionFunc "$@";;
   *                             ) helpFunc;;
 esac

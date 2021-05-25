@@ -78,7 +78,7 @@ dnsUptimeFunc() {
 
 statsFunc() {
   shift
-  "${PI_GUARD_OPT_DIR}"/uptime/stats.sh "$@"
+  "${PI_GUARD_OPT_DIR}"/logs/stats.sh "$@"
   exit 0
 }
 

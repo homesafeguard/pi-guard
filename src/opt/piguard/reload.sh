@@ -3,7 +3,7 @@ set -euo pipefail
 
 . "${PI_GUARD_OPT_DIR}/lib/helpers.sh"
 
-restartFunc() {
+reloadFunc() {
   piguard iptables --restart
   piguard dnsmasq --restart
 

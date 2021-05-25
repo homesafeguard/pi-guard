@@ -88,7 +88,9 @@ Options:
   reload              Reload Pi-guard configuration
   fetch               Fetch lists
   dnsmasq             Manage dnsmasq
-  iptables            Manage iptables";
+  iptables            Manage iptables
+  network-uptime      Check network uptime
+  dns-uptime          Check DNS uptime";
   exit 0
 }
 

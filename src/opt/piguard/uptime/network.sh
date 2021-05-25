@@ -6,7 +6,7 @@ set -euo pipefail
 readonly PING_SECONDS=1
 readonly DOWN_SECONDS=10
 readonly PING_HOST="cloudflare.com"
-readonly UPTIME_FILE="${PI_GUARD_OPT_DIR}/uptime-net.lock"
+readonly UPTIME_FILE="${PI_GUARD_ETC_DIR}/uptime-net.lock"
 
 checkUptime() {
   while true; do

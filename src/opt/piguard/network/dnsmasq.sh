@@ -32,6 +32,7 @@ dnsmasqGenerateRules() {
 dnsmasqConfigure() {
   local message="Configure dnsmasq rules"
   print_title "${message}"
+
   rm -f "${PI_GUARD_DNSMASQ_GENERATED_FILE:?}"
 
   dnsmasqGenerateRules whitelist domains
@@ -46,15 +47,22 @@ dnsmasqConfigure() {
 
 dnsmasqReload () {
   print_title "Reload dnsmasq"
-
+  
+  local message="Copy dnsmasq config file"
+  print_text "${message}"
   ${PI_GUARD_SUDO} cp -f "${PI_GUARD_DNSMASQ_GENERATED_FILE}" "${PI_GUARD_DNSMASQ_FILE}"
-  print_log "dnsmasq" "INFO" "Copy dnsmasq config file"
 
+  local message="Reload daemon"
+  print_text "${message}"
   ${PI_GUARD_SUDO} systemctl daemon-reload
-  print_log "dnsmasq" "INFO" "Reload daemon"
+  print_log "iptables" "INFO" "${message}"
+  print_textnl "[✓]" "GREEN"
 
+  local message="Restart dnsmasq"
+  print_text "${message}"
   ${PI_GUARD_SUDO} systemctl restart dnsmasq
-  print_log "dnsmasq" "INFO" "Restart dnsmasq"
+  print_log "iptables" "INFO" "${message}"
+  print_textnl "[✓]" "GREEN"
 
   return 0
 }

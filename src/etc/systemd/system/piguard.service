@@ -1,0 +1,9 @@
+[Unit]
+Description=Pi-guard
+Before=network-pre.target
+
+[Service]
+ExecStart=/usr/local/bin/piguard daemon
+
+[Install]
+WantedBy=multi-user.target

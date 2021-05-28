@@ -3,7 +3,7 @@ set -euo pipefail
 
 . "${PI_GUARD_OPT_DIR}/lib/helpers.sh"
 
-print_log "uptime" "INFO" "Start Pi-guard"
+print_log "daemon" "INFO" "Start Pi-guard"
 
 # Waiting network
 piguard network --is-up

@@ -22,7 +22,7 @@ if [[ ! -d "/opt/dnscrypt-proxy" ]]; then
 fi
 
 ## Copy files
-${PI_GUARD_SUDO} cp -frT /etc/.piguard/.install /
+${PI_GUARD_SUDO} cp -frT /etc/.piguard/src /
 
 ## Start dnscrypt
 ${PI_GUARD_SUDO} /opt/dnscrypt-proxy/dnscrypt-proxy -service install

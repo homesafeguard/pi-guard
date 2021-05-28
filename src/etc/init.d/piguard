@@ -11,7 +11,7 @@
 RUNAS="root"
 SCRIPT="/usr/local/bin/piguard daemon"
 PIDFILE="/var/run/piguard.pid"
-LOGFILE="/etc/piguard/var/log/daemon.debug.log"
+LOGFILE="/var/log/piguard/daemon.debug.log"
 
 # ----------
 

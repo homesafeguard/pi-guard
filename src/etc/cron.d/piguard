@@ -2,7 +2,7 @@
 # (c) 2021 Pi-guard (https://github.com/homesafeguard/pi-guard)
 
 # Pi-guard: Night shutdown (energy saving)
-45  23  *   *   *   root    PATH="$PATH:/usr/sbin:/usr/local/bin/" piguard shutdown > /etc/piguard/var/log/shutdown.debug.log
+45  23  *   *   *   root    PATH="$PATH:/usr/sbin:/usr/local/bin/" piguard shutdown > /var/log/piguard/shutdown.debug.log
 
 # Pi-guard: Update to latest version
-0  12   *   *   *   root    PATH="$PATH:/usr/sbin:/usr/local/bin/" piguard self-update > /etc/piguard/var/log/self-update.debug.log
+0  12   *   *   *   root    PATH="$PATH:/usr/sbin:/usr/local/bin/" piguard self-update > /var/log/piguard/self-update.debug.log

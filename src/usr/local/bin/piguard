@@ -28,6 +28,12 @@ export PI_GUARD_LOG_FILE
 PI_GUARD_SUDO="$(sh -c "if [ 0 != \"${EUID}\" ]; then echo 'sudo'; fi")"
 export PI_GUARD_SUDO
 
+daemonFunc() {
+  shift
+  "${PI_GUARD_OPT_DIR}"/daemon.sh "$@"
+  exit 0
+}
+
 versionFunc() {
   shift
   "${PI_GUARD_OPT_DIR}"/version.sh "$@"
@@ -111,7 +117,10 @@ if [[ $# = 0 ]]; then
 fi
 
 case "${1:-}" in
+  "daemon"                      ) daemonFunc "$@";;
   "shutdown"                    ) shutdownFunc "$@";;
+
+  "-v" | "version"              ) versionFunc "$@";;
   "self-update"                 ) selfupdateFunc "$@";;
   "selfupdate"                  ) selfupdateFunc "$@";;
   "reload"                      ) reloadFunc "$@";;
@@ -121,6 +130,5 @@ case "${1:-}" in
   "stats"                       ) statsFunc "$@";;
   "network"                     ) networkFunc "$@";;
   "dns"                         ) dnsFunc "$@";;
-  "-v" | "version"              ) versionFunc "$@";;
   *                             ) helpFunc;;
 esac

@@ -9,9 +9,9 @@
 ### END INIT INFO
 
 RUNAS="root"
-SCRIPT="/opt/piguard/service.sh"
+SCRIPT="/usr/local/bin/piguard daemon"
 PIDFILE="/var/run/piguard.pid"
-LOGFILE="/etc/piguard/var/log/service.debug.log"
+LOGFILE="/etc/piguard/var/log/daemon.debug.log"
 
 # ----------
 

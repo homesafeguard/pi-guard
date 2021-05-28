@@ -25,7 +25,7 @@ daemonStartFunc () {
   piguard reload
 }
 
-daemonStartFunc () {
+daemonStopFunc () {
   print_log "daemon" "INFO" "Stop Pi-guard"
 }
 

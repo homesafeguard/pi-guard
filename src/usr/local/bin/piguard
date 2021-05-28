@@ -132,3 +132,5 @@ case "${1:-}" in
   "dns"                         ) dnsFunc "$@";;
   *                             ) helpFunc;;
 esac
+
+printf "\n"

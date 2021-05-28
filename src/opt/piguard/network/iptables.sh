@@ -104,6 +104,19 @@ iptablesConfigure() {
 iptablesRestore () {
   print_title "Restore iptables"
 
+  local message="Flush iptables rules"
+  print_text " - ${message}"
+  ${PI_GUARD_SUDO} iptables -F
+  print_log "iptables" "INFO" "${message}"
+  print_textnl "[✓]" "GREEN"
+  sleep 2
+
+  local message="Destroy ipset rules"
+  print_text " - ${message}"
+  ${PI_GUARD_SUDO} ipset destroy
+  print_log "iptables" "INFO" "${message}"
+  print_textnl "[✓]" "GREEN"
+
   if [[ -s "${PI_GUARD_IPSET_FILE}" ]]; then
     local message="Restore ipset rules"
     print_text " - ${message}"
@@ -125,19 +138,6 @@ iptablesRestore () {
 
 iptablesReload() {
   print_title "Reload iptables"
-
-  local message="Flush iptables rules"
-  print_text " - ${message}"
-  ${PI_GUARD_SUDO} iptables -F
-  print_log "iptables" "INFO" "${message}"
-  print_textnl "[✓]" "GREEN"
-  sleep 2
-  
-  local message="Destroy ipset rules"
-  print_text " - ${message}"
-  ${PI_GUARD_SUDO} ipset destroy
-  print_log "iptables" "INFO" "${message}"
-  print_textnl "[✓]" "GREEN"
 
   local message="Copy ipset config file"
   print_text " - ${message}"

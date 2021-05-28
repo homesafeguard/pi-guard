@@ -27,6 +27,7 @@ updateFilesFunc() {
 
   print_textnl "$(cd "${PI_GUARD_GIT_DIR}/src" && find . -type f ! -name ".gitignore" | sed 's/^\.\(.*\)$/ - \1/g')"
   print_log "self-update" "INFO" "${message}"
+  print_text ""
 
   local message="Reload daemon"
   print_text " - ${message}"

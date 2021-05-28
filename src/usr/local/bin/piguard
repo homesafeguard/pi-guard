@@ -82,6 +82,12 @@ statsFunc() {
   exit 0
 }
 
+shutdownFunc() {
+  shift
+  "${PI_GUARD_OPT_DIR}"/shutdown.sh "$@"
+  exit 0
+}
+
 helpFunc() {
   echo "Usage: piguard [options]
 Example: 'piguard -h'
@@ -105,6 +111,7 @@ if [[ $# = 0 ]]; then
 fi
 
 case "${1:-}" in
+  "shutdown"                    ) shutdownFunc "$@";;
   "self-update"                 ) selfupdateFunc "$@";;
   "selfupdate"                  ) selfupdateFunc "$@";;
   "reload"                      ) reloadFunc "$@";;

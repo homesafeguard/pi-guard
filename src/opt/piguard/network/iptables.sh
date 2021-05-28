@@ -100,6 +100,7 @@ iptablesReload() {
   print_title "Reload iptables"
 
   ${PI_GUARD_SUDO} iptables -F
+  sleep 2
   print_log "iptables" "INFO" "Flush iptables rules"
 
   ${PI_GUARD_SUDO} ipset destroy
@@ -122,6 +123,9 @@ iptablesReload() {
     ${PI_GUARD_SUDO} iptables-restore -n "${PI_GUARD_IPTABLES_FILE}"
      print_log "iptables" "INFO" "Restore iptables rules"
   fi
+
+  ${PI_GUARD_SUDO} systemctl daemon-reload
+  print_log "dnsmasq" "INFO" "Reload daemon"
 
   ${PI_GUARD_SUDO} systemctl restart iptables
   print_log "iptables" "INFO" "Restart iptables service"

@@ -129,3 +129,19 @@ since_time() {
 number_format () {
   printf "%s" "${1}" | sed ':a;s/\B[0-9]\{3\}\>/ &/;ta'
 }
+
+number_diff () {
+  local prev_count="${1}"
+  local next_count="${2}"
+  local diff_count=$(( next_count - prev_count ))
+
+  if [ "${diff_count}" -ge 0 ]; then
+    diff_count="+${diff_count}"
+  fi
+
+  echo "${diff_count}"
+}
+
+timestamp() {
+  date +%s
+}

@@ -9,8 +9,10 @@ readonly PING_HOST="1.1.1.1"
 readonly UPTIME_FILE="${PI_GUARD_ETC_DIR}/uptime-dns.lock"
 
 isUpFunc() {
+  local start_at=$(timestamp)
   while true; do
     if dig A "${PING_HOST}" @127.0.0.1 -p5053 +short +time=1 >/dev/null; then
+      print_log "uptime" "INFO" "DNS is up $(since_time "$(( "${start_at}" - "$(timestamp)" ))")"
       exit 0
     fi
     sleep 1

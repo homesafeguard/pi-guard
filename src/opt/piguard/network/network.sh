@@ -9,8 +9,10 @@ readonly PING_HOST="cloudflare.com"
 readonly UPTIME_FILE="${PI_GUARD_ETC_DIR}/uptime-net.lock"
 
 isUpFunc() {
+  local start_at=$(timestamp)
   while true; do
     if ping -q -c 1 -W 1 "${PING_HOST}" >/dev/null; then
+      print_log "uptime" "INFO" "Network is up $(since_time "$(( "${start_at}" - "$(timestamp)" ))")"
       exit 0
     fi
     sleep 1

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+print_log "uptime" "INFO" "Start Pi-guard"
+
 piguard network --is-up
 piguard dns --is-up
 

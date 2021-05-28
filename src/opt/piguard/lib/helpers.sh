@@ -94,7 +94,7 @@ wget_file() {
   curl -s "${url}" 2> /dev/null > "${dest}.tmp" || sign="✗" color="RED"
   cat "${dest}.tmp" >> "${dest}"
   print_textnl "[${sign} $(wc -l < "${dest}.tmp")]" "${color}"
-  rm -f "${dest}.tmp"
+  rm -f "${dest:?}.tmp"
 }
 
 wget_files() {

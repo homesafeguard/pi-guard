@@ -4,7 +4,7 @@ set -euo pipefail
 . "${PI_GUARD_OPT_DIR}/lib/helpers.sh"
 
 PI_GUARD_DNSMASQ_FILE="/etc/dnsmasq.d/piguard.conf"
-PI_GUARD_DNSMASQ_LIST_DIR="${PI_GUARD_LIST_DIR:?}/dnsmasq"
+PI_GUARD_DNSMASQ_LIST_DIR="${PI_GUARD_LIST_DIR}/dnsmasq"
 PI_GUARD_DNSMASQ_GENERATED_FILE="${PI_GUARD_CONFIG_DIR}/dnsmasq.01-rules.conf"
 
 dnsmasqGenerateRules() {

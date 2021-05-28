@@ -32,7 +32,7 @@ stop() {
     return 1
   fi
   echo 'Stopping service…' >&2
-  kill -15 "$(cat "${PIDFILE}")" && rm -f "${PIDFILE}"
+  kill -15 "$(cat "${PIDFILE}")" && rm -f "${PIDFILE:?}"
   echo 'Service stopped' >&2
 }
 
@@ -42,10 +42,10 @@ uninstall() {
   read -r SURE
   if [ "$SURE" = "yes" ]; then
     stop
-    rm -f "${PIDFILE}"
+    rm -f "${PIDFILE:?}"
     echo "Notice: log file is not be removed: '${LOGFILE}'" >&2
     update-rc.d -f <NAME> remove
-    rm -fv "$0"
+    rm -fv "${0:?}"
   fi
 }
 

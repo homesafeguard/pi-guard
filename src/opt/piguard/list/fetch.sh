@@ -32,7 +32,7 @@ fetchFunc() {
       fi
       wget_file "${url}" "${file}.tmp"
       clean_lines "${file}.tmp" "${REGEX}" > "${file}"
-      rm -f "${file}.tmp"
+      rm -f "${file:?}.tmp"
     fi
   done < <(grep -v "^\(#\|$\)" < "${PI_GUARD_SOURCE_FILE}")
 

@@ -3,7 +3,7 @@ set -euo pipefail
 
 . "${PI_GUARD_OPT_DIR}/lib/helpers.sh"
 
-readonly PI_GUARD_LIST_DIR="${PI_GUARD_LIST_DIR:?}/iptables"
+readonly PI_GUARD_LIST_DIR="${PI_GUARD_LIST_DIR}/iptables"
 
 readonly PI_GUARD_IPSET_FILE="/etc/ipset.conf"
 readonly PI_GUARD_IPSET_FILES="${PI_GUARD_CONFIG_DIR}/ipset.*.conf"
@@ -84,8 +84,8 @@ iptablesConfigure() {
   local message="Configure iptables rules"
   print_title "${message}"
 
-  rm -f "${PI_GUARD_IPSET_GENERATED_FILE}"
-  rm -f "${PI_GUARD_IPTABLES_GENERATED_FILE}"
+  rm -f "${PI_GUARD_IPSET_GENERATED_FILE:?}"
+  rm -f "${PI_GUARD_IPTABLES_GENERATED_FILE:?}"
 
   iptablesGenerateRules whitelist protocols
   iptablesGenerateRules whitelist ips

@@ -4,7 +4,7 @@ Before=network-pre.target
 
 [Service]
 Type=oneshot
-ExecStart=/sbin/iptables-restore -n /etc/iptables.conf
+ExecStart=/usr/local/bin/piguard iptables --restore
 
 [Install]
 WantedBy=multi-user.target

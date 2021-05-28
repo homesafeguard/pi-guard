@@ -56,12 +56,6 @@ dnsmasqReload () {
   print_text " - ${message}"
   ${PI_GUARD_SUDO} cp -f "${PI_GUARD_DNSMASQ_GENERATED_FILE}" "${PI_GUARD_DNSMASQ_FILE}"
 
-  local message="Reload daemon"
-  print_text " - ${message}"
-  ${PI_GUARD_SUDO} systemctl daemon-reload
-  print_log "iptables" "INFO" "${message}"
-  print_textnl "[✓]" "GREEN"
-
   local message="Restart dnsmasq"
   print_text " - ${message}"
   ${PI_GUARD_SUDO} systemctl restart dnsmasq

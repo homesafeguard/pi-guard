@@ -20,13 +20,19 @@ updateRepositoryFunc() {
 updateFilesFunc() {
   local message="Update piguard system files"
   print_title "${message}"
-  print_textnl "$(cd "${PI_GUARD_GIT_DIR}/src" && find . -type f ! -name ".gitignore" | sed 's/^\.\(.*\)$/ - \1/g')"
 
   ${PI_GUARD_SUDO} cp -frT "${PI_GUARD_GIT_DIR}/src" /
   ${PI_GUARD_SUDO} chown -R pi:pi "${PI_GUARD_ETC_DIR}"
   ${PI_GUARD_SUDO} chown -R pi:pi "${PI_GUARD_LOG_FILE}"
 
+  print_textnl "$(cd "${PI_GUARD_GIT_DIR}/src" && find . -type f ! -name ".gitignore" | sed 's/^\.\(.*\)$/ - \1/g')"
   print_log "self-update" "INFO" "${message}"
+
+  local message="Reload daemon"
+  print_text " - ${message}"
+  ${PI_GUARD_SUDO} systemctl daemon-reload
+  print_log "iptables" "INFO" "${message}"
+  print_textnl "[✓]" "GREEN"
 
   return 0
 }

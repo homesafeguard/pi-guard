@@ -153,12 +153,6 @@ iptablesReload() {
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"
 
-  local message="Reload daemon"
-  print_text " - ${message}"
-  ${PI_GUARD_SUDO} systemctl daemon-reload
-  print_log "iptables" "INFO" "${message}"
-  print_textnl "[✓]" "GREEN"
-
   local message="Restart iptables service"
   print_text " - ${message}"
   ${PI_GUARD_SUDO} systemctl restart iptables

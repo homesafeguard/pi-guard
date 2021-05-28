@@ -16,8 +16,10 @@ dnsmasqGenerateRules() {
     action="server"
     ip="1.1.1.1"
   fi
+
   local listfile="${PI_GUARD_DNSMASQ_LIST_DIR}/${type}_${list}.list"
-  print_textnl " - ${listfile}" "BLUE"
+  print_text " - ${listfile}"
+
   if [[ -f "${listfile}" ]]; then
     if [[ "domains" == "${type}" ]]; then
       sed "s/^\(.*\)$/${action}=\/\1\/${ip}/g" "${listfile}" >> "${PI_GUARD_DNSMASQ_GENERATED_FILE}"
@@ -25,6 +27,8 @@ dnsmasqGenerateRules() {
       sed "s/^\(.*\)$/${action}=\/.\1\/${ip}/g" "${listfile}" >> "${PI_GUARD_DNSMASQ_GENERATED_FILE}"
     fi
   fi
+
+  print_textnl "[✓ $(wc -l < "${listfile}")]" "GREEN"
 
   return 0
 }
@@ -49,17 +53,17 @@ dnsmasqReload () {
   print_title "Reload dnsmasq"
   
   local message="Copy dnsmasq config file"
-  print_text "${message}"
+  print_text " - ${message}"
   ${PI_GUARD_SUDO} cp -f "${PI_GUARD_DNSMASQ_GENERATED_FILE}" "${PI_GUARD_DNSMASQ_FILE}"
 
   local message="Reload daemon"
-  print_text "${message}"
+  print_text " - ${message}"
   ${PI_GUARD_SUDO} systemctl daemon-reload
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"
 
   local message="Restart dnsmasq"
-  print_text "${message}"
+  print_text " - ${message}"
   ${PI_GUARD_SUDO} systemctl restart dnsmasq
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"

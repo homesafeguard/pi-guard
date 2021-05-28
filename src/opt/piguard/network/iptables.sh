@@ -20,8 +20,10 @@ iptablesGenerateRules() {
   if [[ "whitelist" == "${list}" ]]; then
     action="LOGGING_ACCEPT"
   fi
+
   local listfile="${PI_GUARD_LIST_DIR}/${type}_${list}.list"
   print_text " - ${listfile}"
+
   if [[ -f "${listfile}" ]]; then
     if [[ "ips" == "${type}" ]]; then
       {
@@ -72,6 +74,7 @@ iptablesGenerateRules() {
         } >> "${PI_GUARD_IPTABLES_GENERATED_FILE}"
     fi
   fi
+
   print_textnl "[✓ $(wc -l < "${listfile}")]" "GREEN"
 
   return 0
@@ -102,34 +105,34 @@ iptablesReload() {
   print_title "Reload iptables"
 
   local message="Flush iptables rules"
-  print_text "${message}"
+  print_text " - ${message}"
   ${PI_GUARD_SUDO} iptables -F
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"
   sleep 2
   
   local message="Destroy ipset rules"
-  print_text "${message}"
+  print_text " - ${message}"
   ${PI_GUARD_SUDO} ipset destroy
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"
 
   local message="Copy ipset config file"
-  print_text "${message}"
+  print_text " - ${message}"
   ${PI_GUARD_SUDO} sh -c "cat ${PI_GUARD_IPSET_FILES} 2> /dev/null > '${PI_GUARD_IPSET_FILE}' || echo 'No ipset files'"
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"
 
   if [[ -s "${PI_GUARD_IPSET_FILE}" ]]; then
     local message="Restore ipset rules"
-    print_text "${message}"
+    print_text " - ${message}"
     ${PI_GUARD_SUDO} ipset restore < "${PI_GUARD_IPSET_FILE}"
     print_log "iptables" "INFO" "${message}"
     print_textnl "[✓]" "GREEN"
   fi
 
   local message="Copy iptables config file"
-  print_text "${message}"
+  print_text " - ${message}"
   ${PI_GUARD_SUDO} sh -c "cat ${PI_GUARD_IPTABLES_FILES} 2> /dev/null > '${PI_GUARD_IPTABLES_FILE}' || echo 'No iptables files'"
   ${PI_GUARD_SUDO} sed -i "s/{{\s*eth0_ip\s*}}/$(ip a l eth0 | awk '/inet / {print $2}' | cut -d/ -f1)/g" "${PI_GUARD_IPTABLES_FILE}"
   ${PI_GUARD_SUDO} sed -i "s/{{\s*eth1_ip\s*}}/$(ip a l eth1 | awk '/inet / {print $2}' | cut -d/ -f1)/g" "${PI_GUARD_IPTABLES_FILE}"
@@ -138,20 +141,20 @@ iptablesReload() {
 
   if [[ -s "${PI_GUARD_IPTABLES_FILE}" ]]; then
     local message="Restore iptables rules"
-    print_text "${message}"
+    print_text " - ${message}"
     ${PI_GUARD_SUDO} iptables-restore -n "${PI_GUARD_IPTABLES_FILE}"
     print_log "iptables" "INFO" "${message}"
     print_textnl "[✓]" "GREEN"
   fi
 
   local message="Reload daemon"
-  print_text "${message}"
+  print_text " - ${message}"
   ${PI_GUARD_SUDO} systemctl daemon-reload
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"
 
   local message="Restart iptables service"
-  print_text "${message}"
+  print_text " - ${message}"
   ${PI_GUARD_SUDO} systemctl restart iptables
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"

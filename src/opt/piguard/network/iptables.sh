@@ -27,7 +27,7 @@ iptablesGenerateRules() {
   if [[ -f "${listfile}" ]]; then
     if [[ "ips" == "${type}" ]]; then
       {
-        echo "create IP_${list^^} hash:net family inet hashsize 16384 maxelem 2000000";
+        echo "create IP_${list^^} hash:net family inet hashsize 16384 maxelem 1000000";
       } >> "${PI_GUARD_IPSET_GENERATED_FILE}"
     fi
     while IFS='' read -r line || [ -n "${line}" ]; do

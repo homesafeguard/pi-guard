@@ -3,7 +3,8 @@ Description=Pi-guard
 Before=network-pre.target
 
 [Service]
-ExecStart=/usr/local/bin/piguard daemon
+ExecStart=/usr/local/bin/piguard daemon --start
+ExecStop=/usr/local/bin/piguard daemon --stop
 
 [Install]
 WantedBy=multi-user.target

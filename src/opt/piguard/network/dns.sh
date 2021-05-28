@@ -12,7 +12,7 @@ isUpFunc() {
   local start_at=$(timestamp)
   while true; do
     if dig A "${PING_HOST}" @127.0.0.1 -p5053 +short +time=1 >/dev/null; then
-      print_log "uptime" "INFO" "DNS is up $(since_time "$(( "${start_at}" - "$(timestamp)" ))")"
+      print_log "uptime" "INFO" "DNS is up $(since_time "$(( "$(timestamp)" - "${start_at}" ))")"
       exit 0
     fi
     sleep 1

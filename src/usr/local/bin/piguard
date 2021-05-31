@@ -13,6 +13,9 @@ export PI_GUARD_GIT_DIR
 PI_GUARD_LOG_DIR="/var/log/piguard"
 export PI_GUARD_LOG_DIR
 
+PI_GUARD_DEBUG_DIR="${PI_GUARD_LOG_DIR}/debug"
+export PI_GUARD_DEBUG_DIR
+
 PI_GUARD_LIST_DIR="${PI_GUARD_ETC_DIR}/lists"
 export PI_GUARD_LIST_DIR
 

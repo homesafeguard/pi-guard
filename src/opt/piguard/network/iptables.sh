@@ -5,11 +5,11 @@ set -euo pipefail
 
 readonly PI_GUARD_LIST_DIR="${PI_GUARD_LIST_DIR}/iptables"
 
-readonly PI_GUARD_IPSET_FILE="/etc/ipset.conf"
+readonly PI_GUARD_IPSET_FILE="/etc/ipset.d/piguard.conf"
 readonly PI_GUARD_IPSET_FILES="${PI_GUARD_CONFIG_DIR}/ipset.*.conf"
 readonly PI_GUARD_IPSET_GENERATED_FILE="${PI_GUARD_CONFIG_DIR}/ipset.01-rules.conf"
 
-readonly PI_GUARD_IPTABLES_FILE="/etc/iptables.conf"
+readonly PI_GUARD_IPTABLES_FILE="/etc/iptables.d/piguard.conf"
 readonly PI_GUARD_IPTABLES_FILES="${PI_GUARD_CONFIG_DIR}/iptables.*.conf"
 readonly PI_GUARD_IPTABLES_GENERATED_FILE="${PI_GUARD_CONFIG_DIR}/iptables.03-filter.conf"
 

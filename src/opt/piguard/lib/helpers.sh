@@ -91,7 +91,7 @@ wget_file() {
   print_text " - ${url}"
   local color="GREEN"
   local sign="✓"
-  curl -s "${url}" 2> /dev/null > "${dest}.tmp" || sign="✗" color="RED"
+  curl --connect-timeout 5 -sf "${url}" 2> /dev/null > "${dest}.tmp" || sign="✗" color="RED"
   cat "${dest}.tmp" >> "${dest}"
   print_textnl "[${sign} $(wc -l < "${dest}.tmp")]" "${color}"
   rm -f "${dest:?}.tmp"

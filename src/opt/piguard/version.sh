@@ -19,7 +19,7 @@ getLocalVersion() {
 
 getRemoteVersion() {
     local version
-    version=$(curl --silent --fail "https://api.github.com/repos/homesafeguard/pi-guard/releases/latest" | awk -F: '$1 ~/tag_name/ { print $2 }' | tr -cd '[[:alnum:]]._-')
+    version=$(curl --connect-timeout 5 -sf "https://api.github.com/repos/homesafeguard/pi-guard/releases/latest" | awk -F: '$1 ~/tag_name/ { print $2 }' | tr -cd '[[:alnum:]]._-')
 
     if [[ "${version}" =~ ^v ]]; then
         echo "${version}"

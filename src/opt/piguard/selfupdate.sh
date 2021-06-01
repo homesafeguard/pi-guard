@@ -8,9 +8,9 @@ updateRepositoryFunc() {
   print_title "${message}"
 
   cd "${PI_GUARD_GIT_DIR}" 2> /dev/null || return 1;
-  ${PI_GUARD_SUDO} git fetch
-  ${PI_GUARD_SUDO} git checkout main
-  ${PI_GUARD_SUDO} git reset --hard origin/main
+  git fetch
+  git checkout main
+  git reset --hard origin/main
 
   print_log "self-update" "INFO" "${message}"
 
@@ -21,9 +21,9 @@ updateFilesFunc() {
   local message="Update piguard system files"
   print_title "${message}"
 
-  ${PI_GUARD_SUDO} cp -frT "${PI_GUARD_GIT_DIR}/src" /
-  ${PI_GUARD_SUDO} chown -R pi:pi "${PI_GUARD_ETC_DIR}"
-  ${PI_GUARD_SUDO} chown -R pi:pi "${PI_GUARD_LOG_DIR}"
+  cp -frT "${PI_GUARD_GIT_DIR}/src" /
+  chown -R pi:pi "${PI_GUARD_ETC_DIR}"
+  chown -R pi:pi "${PI_GUARD_LOG_DIR}"
 
   print_textnl "$(cd "${PI_GUARD_GIT_DIR}/src" && find . -type f ! -name ".gitignore" | sed 's/^\.\(.*\)$/ - \1/g')"
   print_log "self-update" "INFO" "${message}"
@@ -31,7 +31,7 @@ updateFilesFunc() {
 
   local message="Reload daemon"
   print_text " - ${message}"
-  ${PI_GUARD_SUDO} systemctl daemon-reload
+  systemctl daemon-reload
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"
 

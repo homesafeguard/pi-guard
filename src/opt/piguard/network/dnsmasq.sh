@@ -54,13 +54,13 @@ dnsmasqReload () {
   
   local message="Copy dnsmasq config file"
   print_text " - ${message}"
-  ${PI_GUARD_SUDO} cp -f "${PI_GUARD_DNSMASQ_GENERATED_FILE}" "${PI_GUARD_DNSMASQ_FILE}"
+  cp -f "${PI_GUARD_DNSMASQ_GENERATED_FILE}" "${PI_GUARD_DNSMASQ_FILE}"
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"
 
   local message="Restart dnsmasq"
   print_text " - ${message}"
-  ${PI_GUARD_SUDO} systemctl restart dnsmasq
+  systemctl restart dnsmasq
   print_log "iptables" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"
 

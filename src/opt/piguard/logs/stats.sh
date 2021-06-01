@@ -8,7 +8,7 @@ readonly STAT_DAY=$(LC_TIME="en_US.UTF-8" date -d "-1 day" +"%-d")
 
 dnsmasqStatsFunc () {
   print_title "Dnsmasq stats for ${STAT_MONTH} ${STAT_DAY}"
-  readonly file="/var/log/piguard/dnsmasq.log"
+  readonly file="${PI_GUARD_LOG_DIR}/dnsmasq.log"
   local opts=""
   if [[ '--accept' == "${1:-}" ]]; then
     opts=" -v"

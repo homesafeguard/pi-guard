@@ -28,9 +28,6 @@ export PI_GUARD_SOURCE_FILE
 PI_GUARD_LOG_FILE="${PI_GUARD_LOG_DIR}/piguard.log"
 export PI_GUARD_LOG_FILE
 
-PI_GUARD_SUDO="$(sh -c "if [ 0 != \"${EUID}\" ]; then echo 'sudo'; fi")"
-export PI_GUARD_SUDO
-
 daemonFunc() {
   shift
   "${PI_GUARD_OPT_DIR}"/daemon.sh "$@"
@@ -51,7 +48,7 @@ selfupdateFunc() {
 
 reloadFunc() {
   shift
-  "${PI_GUARD_OPT_DIR}"/reload.sh "$@"
+  "${PI_GUARD_OPT_DIR}"/list/reload.sh "$@"
   exit 0
 }
 
@@ -97,6 +94,14 @@ shutdownFunc() {
   exit 0
 }
 
+logFunc() {
+  journalctl -f -u piguard.service -n300
+}
+
+statusFunc() {
+  systemctl status piguard.service
+}
+
 helpFunc() {
   echo "Usage: piguard [options]
 Example: 'piguard -h'
@@ -105,13 +110,15 @@ Add '-h' after specific commands for more information on usage
 Options:
   -v, version         Show installed version of Pi-guard
   self-update         Update Pi-guard to latest version
-  reload              Reload Pi-guard configuration
   fetch               Fetch lists
+  reload              Reload lists
   dnsmasq             Manage dnsmasq
   iptables            Manage iptables
   stats               Stats
   network             Check network uptime
-  dns                 Check DNS uptime";
+  dns                 Check DNS uptime
+  log                 View service log
+  status              View service status";
   exit 0
 }
 
@@ -126,12 +133,14 @@ case "${1:-}" in
   "-v" | "version"              ) versionFunc "$@";;
   "self-update"                 ) selfupdateFunc "$@";;
   "selfupdate"                  ) selfupdateFunc "$@";;
-  "reload"                      ) reloadFunc "$@";;
   "fetch"                       ) fetchFunc "$@";;
+  "reload"                      ) reloadFunc "$@";;
   "dnsmasq"                     ) dnsmasqFunc "$@";;
   "iptables"                    ) iptablesFunc "$@";;
   "stats"                       ) statsFunc "$@";;
   "network"                     ) networkFunc "$@";;
   "dns"                         ) dnsFunc "$@";;
+  "log"                         ) logFunc "$@";;
+  "status"                      ) statusFunc "$@";;
   *                             ) helpFunc;;
 esac

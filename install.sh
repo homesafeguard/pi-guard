@@ -3,8 +3,19 @@ set -euo pipefail
 
 PI_GUARD_SUDO="$(sh -c "if [ 0 != \"${EUID}\" ]; then echo 'sudo'; fi")"
 
+## Disable services
+${PI_GUARD_SUDO} systemctl disable hciuart.service
+${PI_GUARD_SUDO} systemctl disable bluealsa.service
+${PI_GUARD_SUDO} systemctl disable bluetooth.service
+${PI_GUARD_SUDO} apt purge bluez -y
+${PI_GUARD_SUDO} apt autoremove -y
+
 ## Install dependencies
-${PI_GUARD_SUDO} apt-get install -y curl git dnsutils dnsmasq
+${PI_GUARD_SUDO} apt install -y curl git dnsutils dnsmasq
+
+## Install speedtest
+curl -s https://install.speedtest.net/app/cli/install.deb.sh | ${PI_GUARD_SUDO} bash
+${PI_GUARD_SUDO} apt install speedtest
 
 ## Install piguard repository
 if [[ ! -d "/etc/.piguard" ]]; then

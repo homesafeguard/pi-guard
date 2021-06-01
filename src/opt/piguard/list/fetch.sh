@@ -3,11 +3,41 @@ set -euo pipefail
 
 . "${PI_GUARD_OPT_DIR}/lib/helpers.sh"
 
-fetchFunc() {
-  local message="Fetch list"
+__archiveLists() {
+  local message="Archive lists"
   print_title "${message}"
 
-  rm -fr "${PI_GUARD_LIST_DIR:?}"
+  find "${PI_GUARD_LIST_DIR}" -type f -name "*.list" -exec bash -c 'x="${1}"; mv -vn "${x}" "${x//.list/.$(date +%Y%m%d).archive}"' _ {} \;
+  find "${PI_GUARD_LIST_DIR}" -type f -name "*.archive" -mtime +7 -exec rm -vf "{}" \;
+  find "${PI_GUARD_LIST_DIR}" -type f -name "*.history" -mtime +7 -exec rm -vf "{}" \;
+  find "${PI_GUARD_LIST_DIR}" -type f -name "*.list" -exec rm -vf "{}" \;
+
+  print_log "fetch" "INFO" "${message}"
+
+  return 0
+}
+
+__historyLists() {
+  local message="History lists"
+  print_title "${message}"
+
+  find "${PI_GUARD_LIST_DIR}" -type f -name "*.list" | while IFS='' read -r file || [ -n "${file}" ]; do
+    local base_file="${file//.list/}"
+    print_text " - ${file}"
+    comm -3 <(sort "${base_file}".*.archive | uniq) <(sort "${file}") > "${base_file}.history"
+    print_textnl "[✓ $(wc -l < "${base_file}.history")]" "GREEN"
+  done
+
+  print_log "fetch" "INFO" "${message}"
+
+  return 0
+}
+
+fetchFunc() {
+  __archiveLists
+
+  local message="Fetch lists"
+  print_title "${message}"
 
   while IFS='' read -r line || [ -n "${line}" ]; do
     local type="$(printf "%s" "${line}" | awk '{ print $1 }')"
@@ -37,6 +67,8 @@ fetchFunc() {
   done < <(grep -v "^\(#\|$\)" < "${PI_GUARD_SOURCE_FILE}")
 
   print_log "fetch" "INFO" "${message}"
+
+  __historyLists
 
   return 0
 }

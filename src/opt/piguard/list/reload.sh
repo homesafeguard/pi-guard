@@ -11,10 +11,10 @@ reloadFunc() {
 }
 
 helpFunc() {
-  echo "Usage: piguard reload
-Reload Pi-guard
+  echo "Usage: piguard reload lists
+Reload lists
   -h, --help          Show this help dialog
-  reload              Reload Pi-guard configuration";
+  reload              Reload lists";
   exit 0
 }
 

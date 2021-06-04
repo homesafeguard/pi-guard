@@ -11,11 +11,7 @@ ${PI_GUARD_SUDO} apt purge bluez -y
 ${PI_GUARD_SUDO} apt autoremove -y
 
 ## Install dependencies
-${PI_GUARD_SUDO} apt install -y curl git dnsutils dnsmasq
-
-## Install speedtest
-curl -s https://install.speedtest.net/app/cli/install.deb.sh | ${PI_GUARD_SUDO} bash
-${PI_GUARD_SUDO} apt install speedtest
+${PI_GUARD_SUDO} apt install -y curl git dnsutils dnsmasq iperf
 
 ## Install piguard repository
 if [[ ! -d "/etc/.piguard" ]]; then

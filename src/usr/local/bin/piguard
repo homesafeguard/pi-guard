@@ -28,6 +28,11 @@ export PI_GUARD_SOURCE_FILE
 PI_GUARD_LOG_FILE="${PI_GUARD_LOG_DIR}/piguard.log"
 export PI_GUARD_LOG_FILE
 
+if [ 0 != "${EUID}" ]; then
+  echo 'I must be run by root'
+  exit
+fi
+
 daemonFunc() {
   shift
   "${PI_GUARD_OPT_DIR}"/daemon.sh "$@"

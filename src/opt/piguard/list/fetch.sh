@@ -23,8 +23,8 @@ __historyLists() {
 
   find "${PI_GUARD_LIST_DIR}" -type f -name "*.list" | while IFS='' read -r file || [ -n "${file}" ]; do
     local base_file="${file//.list/}"
-    print_text " - ${file}"
-    comm -3 <(sort "${base_file}".*.archive | uniq) <(sort "${file}") > "${base_file}.history"
+    print_text " - ${base_file}.history"
+    comm -13 <(sort "${file}") <(sort "${base_file}".*.archive | uniq) > "${base_file}.history"
     print_textnl "[✓ $(wc -l < "${base_file}.history")]" "GREEN"
   done
 

@@ -21,10 +21,6 @@ daemonStart() {
 
   # Watch DNS server uptime
   piguard dns --uptime &
-
-  while true; do
-    sleep 1
-  done
 }
 
 daemonStartPost() {

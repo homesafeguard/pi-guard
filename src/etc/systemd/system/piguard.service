@@ -3,7 +3,6 @@ Description=Pi-guard
 Before=network-pre.target
 
 [Service]
-Type=simple
 PIDFile=/run/piguard/piguard.pid
 ExecStart=/usr/local/bin/piguard daemon --start
 ExecStop=/usr/local/bin/piguard daemon --stop

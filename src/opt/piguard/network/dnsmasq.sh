@@ -70,27 +70,47 @@ dnsmasqRestart() {
 }
 
 dnsmasqTest() {
-  print_title "Test dnsmasq"
+  local message="Test dnsmasq"
+  print_title "${message}"
 
   /usr/sbin/dnsmasq --test
+
+  print_log "dnsmasq" "INFO" "${message}"
+
+  return 0
 }
 
 dnsmasqRestore() {
-  print_title "Restore dnsmasq"
+  local message="Restore dnsmasq"
+  print_title "${message}"
 
   /etc/init.d/dnsmasq systemd-exec
+
+  print_log "dnsmasq" "INFO" "${message}"
+
+  return 0
 }
 
 dnsmasqStartResolvconf() {
-  print_title "Start dnsmasq resolvconf"
+  local message="Start dnsmasq resolvconf"
+  print_title "${message}"
 
   /etc/init.d/dnsmasq systemd-start-resolvconf
+
+  print_log "dnsmasq" "INFO" "${message}"
+
+  return 0
 }
 
 dnsmasqStopResolvconf() {
-  print_title "Stop dnsmasq resolvconf"
+  local message="Stop dnsmasq resolvconf"
+  print_title "${message}"
 
   /etc/init.d/dnsmasq systemd-stop-resolvconf
+
+  print_log "dnsmasq" "INFO" "${message}"
+
+  return 0
 }
 
 help() {

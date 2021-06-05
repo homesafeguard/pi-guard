@@ -8,13 +8,11 @@ readonly DOWN_SECONDS=10
 readonly PING_HOST="cloudflare.com"
 readonly UPTIME_FILE="${PI_GUARD_ETC_DIR}/uptime-net.lock"
 
-isUpFunc() {
+isUp() {
   local start_at=$(timestamp)
   while true; do
     if ping -q -c 1 -W 1 "${PING_HOST}" >/dev/null; then
-      local end_at=$(timestamp)
-      ntpdate -u pool.ntp.org
-      print_log "uptime" "INFO" "Network is up $(since_time "$(( "${end_at}" - "${start_at}" ))")"
+      print_log "uptime" "INFO" "Network is up $(since_time "$(( "$(timestamp)" - "${start_at}" ))")"
       exit 0
     fi
     sleep 1
@@ -22,7 +20,7 @@ isUpFunc() {
   exit 1
 }
 
-uptimeFunc() {
+uptime() {
   while true; do
     if ping -q -c 1 -W 1 "${PING_HOST}" >/dev/null; then
       if [ -f "${UPTIME_FILE}" ]; then
@@ -38,7 +36,7 @@ uptimeFunc() {
   exit 1
 }
 
-helpFunc() {
+help() {
   echo "Usage: piguard network uptime
 Check network uptime
   -h, --help            Show this help dialog
@@ -48,7 +46,7 @@ Check network uptime
 }
 
 case "${1:-}" in
-  "--is-up"            ) isUpFunc "$@";;
-  "--uptime"           ) uptimeFunc "$@";;
-  *                    ) helpFunc;;
+  "--is-up"            ) isUp "$@";;
+  "--uptime"           ) uptime "$@";;
+  *                    ) help;;
 esac

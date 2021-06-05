@@ -3,8 +3,13 @@ Description=Pi-guard
 Before=network-pre.target
 
 [Service]
+Type=forking
+PIDFile=/run/piguard/piguard.pid
+ExecStartPre=/usr/local/bin/piguard daemon --start-pre
 ExecStart=/usr/local/bin/piguard daemon --start
+ExecStartPost=/usr/local/bin/piguard daemon --start-post
 ExecStop=/usr/local/bin/piguard daemon --stop
+ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
 WantedBy=multi-user.target

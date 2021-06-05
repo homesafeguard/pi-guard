@@ -13,7 +13,7 @@ readonly PI_GUARD_IPTABLES_FILE="/etc/iptables.d/piguard.conf"
 readonly PI_GUARD_IPTABLES_FILES="${PI_GUARD_CONFIG_DIR}/iptables.*.conf"
 readonly PI_GUARD_IPTABLES_GENERATED_FILE="${PI_GUARD_CONFIG_DIR}/iptables.03-filter.conf"
 
-iptablesGenerateRules() {
+__iptablesGenerateRules() {
   local list="${1}"
   local type="${2}"
   local action="LOGGING_DROP"
@@ -80,28 +80,7 @@ iptablesGenerateRules() {
   return 0
 }
 
-iptablesConfigure() {
-  local message="Configure iptables rules"
-  print_title "${message}"
-
-  rm -f "${PI_GUARD_IPSET_GENERATED_FILE:?}"
-  rm -f "${PI_GUARD_IPTABLES_GENERATED_FILE:?}"
-
-  iptablesGenerateRules whitelist protocols
-  iptablesGenerateRules whitelist ips
-  iptablesGenerateRules whitelist ports
-  iptablesGenerateRules whitelist strings
-  iptablesGenerateRules blacklist protocols
-  iptablesGenerateRules blacklist ips
-  iptablesGenerateRules blacklist ports
-  iptablesGenerateRules blacklist strings
-
-  print_log "iptables" "INFO" "${message}"
-
-  return 0
-}
-
-iptablesRestore () {
+iptablesRestore() {
   print_title "Restore iptables"
 
   local message="Flush iptables rules"
@@ -163,13 +142,29 @@ iptablesReload() {
 }
 
 iptablesRestart() {
-  iptablesConfigure
+  local message="Configure iptables rules"
+  print_title "${message}"
+
+  rm -f "${PI_GUARD_IPSET_GENERATED_FILE:?}"
+  rm -f "${PI_GUARD_IPTABLES_GENERATED_FILE:?}"
+
+  __iptablesGenerateRules whitelist protocols
+  __iptablesGenerateRules whitelist ips
+  __iptablesGenerateRules whitelist ports
+  __iptablesGenerateRules whitelist strings
+  __iptablesGenerateRules blacklist protocols
+  __iptablesGenerateRules blacklist ips
+  __iptablesGenerateRules blacklist ports
+  __iptablesGenerateRules blacklist strings
+
+  print_log "iptables" "INFO" "${message}"
+
   iptablesReload
 
   return 0
 }
 
-helpFunc() {
+help() {
   echo "Usage: piguard iptables --restart
 Manage iptables
   -h, --help           Show this help dialog
@@ -185,5 +180,5 @@ case "${1:-}" in
   "--reload"           ) iptablesReload "$@";;
   "--restore"          ) iptablesRestore "$@";;
   "--restart"          ) iptablesRestart "$@";;
-  *                    ) helpFunc "$@";;
+  *                    ) help "$@";;
 esac

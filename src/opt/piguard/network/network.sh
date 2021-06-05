@@ -12,7 +12,9 @@ isUpFunc() {
   local start_at=$(timestamp)
   while true; do
     if ping -q -c 1 -W 1 "${PING_HOST}" >/dev/null; then
-      print_log "uptime" "INFO" "Network is up $(since_time "$(( "$(timestamp)" - "${start_at}" ))")"
+      local end_at=$(timestamp)
+      ntpdate -u pool.ntp.org
+      print_log "uptime" "INFO" "Network is up $(since_time "$(( "${end_at}" - "${start_at}" ))")"
       exit 0
     fi
     sleep 1

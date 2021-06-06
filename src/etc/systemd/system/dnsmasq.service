@@ -1,5 +1,6 @@
 [Unit]
 Description=dnsmasq - A lightweight DHCP and caching DNS server
+ConditionFileIsExecutable=/usr/local/bin/piguard
 Requires=network.target
 Before=nss-lookup.target
 After=network.target

@@ -1,5 +1,6 @@
 [Unit]
 Description=Pi-guard
+ConditionFileIsExecutable=/usr/local/bin/piguard
 Before=network-pre.target
 
 [Service]

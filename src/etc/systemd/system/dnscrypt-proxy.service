@@ -1,6 +1,7 @@
 [Unit]
 Description=Encrypted/authenticated DNS proxy
 ConditionFileIsExecutable=/opt/dnscrypt-proxy/dnscrypt-proxy
+Before=network-pre.target
 
 [Service]
 StartLimitInterval=5

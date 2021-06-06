@@ -4,7 +4,7 @@ set -euo pipefail
 . "${PI_GUARD_OPT_DIR}/lib/helpers.sh"
 
 dnscryptRestore() {
-  local message="Start dnscrypt"
+  local message="Restore dnscrypt"
   print_title "${message}"
 
   print_log "dnscrypt" "INFO" "${message}"

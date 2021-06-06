@@ -7,9 +7,8 @@ dnscryptRestore() {
   local message="Start dnscrypt"
   print_title "${message}"
 
-  /opt/dnscrypt-proxy/dnscrypt-proxy "-config" "dnscrypt-proxy.toml"
-
   print_log "dnscrypt" "INFO" "${message}"
+  /opt/dnscrypt-proxy/dnscrypt-proxy "-config" "dnscrypt-proxy.toml"
 
   return 0
 }

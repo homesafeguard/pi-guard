@@ -3,14 +3,21 @@ set -euo pipefail
 
 PI_GUARD_SUDO="$(sh -c "if [ 0 != \"${EUID}\" ]; then echo 'sudo'; fi")"
 
-## Disable services
+## Remove bluetooth
 ${PI_GUARD_SUDO} systemctl disable hciuart.service
 ${PI_GUARD_SUDO} systemctl disable bluealsa.service
 ${PI_GUARD_SUDO} systemctl disable bluetooth.service
-${PI_GUARD_SUDO} apt purge bluez -y
-${PI_GUARD_SUDO} apt autoremove -y
+${PI_GUARD_SUDO} apt remove -y --purge bluez
+
+## Remove Wifi
+${PI_GUARD_SUDO} systemctl disable wpa_supplicant.service
+
+## Remove dhcpcd
+${PI_GUARD_SUDO} apt remove -y --purge dhcpcd5
 
 ## Install dependencies
+${PI_GUARD_SUDO} apt update
+${PI_GUARD_SUDO} apt dist-upgrade
 ${PI_GUARD_SUDO} apt install -y curl git dnsutils dnsmasq iperf
 
 ## Install piguard repository

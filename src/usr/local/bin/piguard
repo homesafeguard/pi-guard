@@ -33,81 +33,87 @@ if [ 0 != "${EUID}" ]; then
   exit
 fi
 
-daemonFunc() {
+daemon() {
   shift
   "${PI_GUARD_OPT_DIR}"/daemon.sh "$@"
   exit 0
 }
 
-versionFunc() {
+version() {
   shift
   "${PI_GUARD_OPT_DIR}"/version.sh "$@"
   exit 0
 }
 
-selfupdateFunc() {
+selfupdate() {
   shift
   "${PI_GUARD_OPT_DIR}"/selfupdate.sh "$@"
   exit 0
 }
 
-reloadFunc() {
+reload() {
   shift
   "${PI_GUARD_OPT_DIR}"/list/reload.sh "$@"
   exit 0
 }
 
-fetchFunc() {
+fetch() {
   shift
   "${PI_GUARD_OPT_DIR}"/list/fetch.sh "$@"
   exit 0
 }
 
-dnsmasqFunc() {
+dnsmasq() {
   shift
   "${PI_GUARD_OPT_DIR}"/network/dnsmasq.sh "$@"
   exit 0
 }
 
-iptablesFunc() {
+dnscrypt() {
+  shift
+  "${PI_GUARD_OPT_DIR}"/network/dnscrypt.sh "$@"
+  exit 0
+}
+
+iptables() {
   shift
   "${PI_GUARD_OPT_DIR}"/network/iptables.sh "$@"
   exit 0
 }
 
-networkFunc() {
+network() {
   shift
   "${PI_GUARD_OPT_DIR}"/network/network.sh "$@"
   exit 0
 }
 
-dnsFunc() {
+dns() {
   shift
   "${PI_GUARD_OPT_DIR}"/network/dns.sh "$@"
   exit 0
 }
 
-statsFunc() {
+stats() {
   shift
   "${PI_GUARD_OPT_DIR}"/logs/stats.sh "$@"
   exit 0
 }
 
-shutdownFunc() {
+shutdown() {
   shift
   "${PI_GUARD_OPT_DIR}"/shutdown.sh "$@"
   exit 0
 }
 
-logFunc() {
+log() {
   journalctl -f -u piguard.service -n300
 }
 
-statusFunc() {
+status() {
   systemctl status piguard.service
 }
 
-helpFunc() {
+help() {
   echo "Usage: piguard [options]
 Example: 'piguard -h'
 Add '-h' after specific commands for more information on usage
@@ -117,6 +123,7 @@ Options:
   self-update         Update Pi-guard to latest version
   fetch               Fetch lists
   reload              Reload lists
+  dnscrypt            Manage dnscrypt
   dnsmasq             Manage dnsmasq
   iptables            Manage iptables
   stats               Stats
@@ -128,24 +135,25 @@ Options:
 }
 
 if [[ $# = 0 ]]; then
-  helpFunc
+  help
 fi
 
 case "${1:-}" in
-  "daemon"                      ) daemonFunc "$@";;
-  "shutdown"                    ) shutdownFunc "$@";;
+  "daemon"                      ) daemon "$@";;
+  "shutdown"                    ) shutdown "$@";;
 
-  "-v" | "version"              ) versionFunc "$@";;
-  "self-update"                 ) selfupdateFunc "$@";;
-  "selfupdate"                  ) selfupdateFunc "$@";;
-  "fetch"                       ) fetchFunc "$@";;
-  "reload"                      ) reloadFunc "$@";;
-  "dnsmasq"                     ) dnsmasqFunc "$@";;
-  "iptables"                    ) iptablesFunc "$@";;
-  "stats"                       ) statsFunc "$@";;
-  "network"                     ) networkFunc "$@";;
-  "dns"                         ) dnsFunc "$@";;
-  "log"                         ) logFunc "$@";;
-  "status"                      ) statusFunc "$@";;
-  *                             ) helpFunc;;
+  "-v" | "version"              ) version "$@";;
+  "self-update"                 ) selfupdate "$@";;
+  "selfupdate"                  ) selfupdate "$@";;
+  "fetch"                       ) fetch "$@";;
+  "reload"                      ) reload "$@";;
+  "dnscrypt"                    ) dnscrypt "$@";;
+  "dnsmasq"                     ) dnsmasq "$@";;
+  "iptables"                    ) iptables "$@";;
+  "stats"                       ) stats "$@";;
+  "network"                     ) network "$@";;
+  "dns"                         ) dns "$@";;
+  "log"                         ) log "$@";;
+  "status"                      ) status "$@";;
+  *                             ) help;;
 esac

@@ -5,4 +5,4 @@
 45  23  *   *   *   root    PATH="$PATH:/usr/sbin:/usr/local/bin/" piguard shutdown > /var/log/piguard/debug/shutdown.log
 
 # Pi-guard: Update to latest version
-0  12   *   *   *   root    PATH="$PATH:/usr/sbin:/usr/local/bin/" piguard self-update > /var/log/piguard/debug/self-update.log
+0  12   *   *   1   root    PATH="$PATH:/usr/sbin:/usr/local/bin/" piguard self-update > /var/log/piguard/debug/self-update.log

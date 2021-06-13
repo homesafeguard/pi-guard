@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-if [ 0 != "${EUID}" ]; then
+if [ "$(id -u)" -ne 0 ]; then
   echo 'I must be run by root'
   exit
 fi
@@ -10,18 +10,27 @@ fi
 apt remove -y --purge dhcpcd5
 
 ## Disable bluetooth
-systemctl disable hciuart.service
-systemctl disable bluetooth.service
+if service --status-all | grep -Fq 'hciuart'; then
+  systemctl disable hciuart.service
+fi
+if service --status-all | grep -Fq 'bluealsa'; then
+  systemctl disable bluealsa.service
+fi
+if service --status-all | grep -Fq 'bluetooth'; then
+  systemctl disable bluetooth.service
+fi
 apt remove -y --purge bluez
 
 ## Disable Wifi
-systemctl disable wpa_supplicant.service
+if service --status-all | grep -Fq 'wpa_supplicant'; then
+  systemctl disable wpa_supplicant.service
+fi
 
 ## Install dependencies
 apt update
 apt dist-upgrade -y
 apt install -y curl git dnsutils dnsmasq
-apt autoremove --purge
+apt autoremove -y --purge
 apt autoclean
 
 ## Install piguard repository
@@ -42,9 +51,10 @@ fi
 ## Copy piguard files
 cp -frT /etc/.piguard/src /
 
-## Start dnscrypt
-/opt/dnscrypt-proxy/dnscrypt-proxy -service install
-/opt/dnscrypt-proxy/dnscrypt-proxy -service start
+## Install dnscrypt
+if ! service --status-all | grep -Fq 'dnscrypt'; then
+  /opt/dnscrypt-proxy/dnscrypt-proxy -service install
+fi
 
 ## Restart dnsmasq service
 systemctl restart dnsmasq

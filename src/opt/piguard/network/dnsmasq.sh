@@ -26,9 +26,10 @@ __dnsmasqGenerateRules() {
     elif [[ "wildcards" == "${type}" ]]; then
       sed "s/^\(.*\)$/${action}=\/.\1\/${ip}/g" "${listfile}" >> "${PI_GUARD_DNSMASQ_GENERATED_FILE}"
     fi
+    print_textnl "[✓ $(wc -l < "${listfile}")]" "GREEN"
+  else
+    print_textnl "[✗]" "RED"
   fi
-
-  print_textnl "[✓ $(wc -l < "${listfile}")]" "GREEN"
 
   return 0
 }
@@ -38,14 +39,19 @@ dnsmasqReload() {
   
   local message="Copy dnsmasq config file"
   print_text " - ${message}"
-  cp -f "${PI_GUARD_DNSMASQ_GENERATED_FILE}" "${PI_GUARD_DNSMASQ_FILE}"
-  print_log "iptables" "INFO" "${message}"
-  print_textnl "[✓]" "GREEN"
+  if [[ -f "${PI_GUARD_DNSMASQ_GENERATED_FILE}" ]]; then
+    cp -f "${PI_GUARD_DNSMASQ_GENERATED_FILE}" "${PI_GUARD_DNSMASQ_FILE}"
+    print_log "dnsmasq" "INFO" "${message}"
+    print_textnl "[✓]" "GREEN"
+  else
+    print_log "dnsmasq" "WARNING" "Empty file: ${PI_GUARD_DNSMASQ_GENERATED_FILE}"
+    print_textnl "[✗]" "RED"
+  fi
 
   local message="Restart dnsmasq"
   print_text " - ${message}"
   systemctl restart dnsmasq
-  print_log "iptables" "INFO" "${message}"
+  print_log "dnsmasq" "INFO" "${message}"
   print_textnl "[✓]" "GREEN"
 
   return 0

@@ -11,6 +11,7 @@ readonly PIGUARD_PATH='/etc/.piguard'
 
 ## Remove dhcpcd
 apt remove -y --purge dhcpcd5
+rm -fr /etc/dhcp
 
 ## Disable bluetooth
 if service --status-all 2>/dev/null | grep -Fq 'hciuart'; then
@@ -32,7 +33,7 @@ fi
 ## Install dependencies
 apt update
 apt dist-upgrade -y
-apt install -y curl git dnsutils dnsmasq iptables ipset
+apt install -y vim curl git dnsutils dnsmasq iptables ipset
 apt autoremove -y --purge
 apt autoclean
 

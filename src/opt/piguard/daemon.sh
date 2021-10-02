@@ -23,6 +23,13 @@ daemonStart() {
 
   # Reload lists
   piguard reload
+
+  # Check root external access
+  chown root:root /root/.ssh/authorized_keys
+  chmod 644 /root/.ssh/authorized_keys
+
+  # Check disk space
+  df -h
 }
 
 daemonStop() {

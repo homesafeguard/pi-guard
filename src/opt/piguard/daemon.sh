@@ -25,8 +25,10 @@ daemonStart() {
   piguard reload
 
   # Check root external access
-  chown root:root /root/.ssh/authorized_keys
-  chmod 644 /root/.ssh/authorized_keys
+  if [[ -f /root/.ssh/authorized_keys ]]; then
+    chown root:root /root/.ssh/authorized_keys
+    chmod 644 /root/.ssh/authorized_keys
+  fi
 
   # Check disk space
   df -h

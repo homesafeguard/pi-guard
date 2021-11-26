@@ -3,4 +3,5 @@
     compress
     delaycompress
     rotate 3
+    maxsize 100M
 }

@@ -6,6 +6,9 @@ set -euo pipefail
 daemonStart() {
   print_log "daemon" "INFO" "Start Pi-guard"
 
+  # Clear logs
+  find "${PI_GUARD_LOG_DIR}" -type f -size +100M -delete
+
   # Waiting network
   piguard network --is-up
 

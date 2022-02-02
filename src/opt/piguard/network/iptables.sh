@@ -16,7 +16,7 @@ readonly PI_GUARD_IPTABLES_GENERATED_FILE="${PI_GUARD_CONFIG_DIR}/iptables.03-fi
 __iptablesGenerateRules() {
   local list="${1}"
   local type="${2}"
-  local action="DROP"
+  local action="REJECT"
   if [[ "whitelist" == "${list}" ]]; then
     action="ACCEPT"
   fi
@@ -40,37 +40,37 @@ __iptablesGenerateRules() {
         } >> "${PI_GUARD_IPSET_GENERATED_FILE}"
       elif [[ "protocols" == "${type}" ]]; then
           {
-            echo "-A FORWARD -i eth1 -p ${line} -j ${action}$([[ "DROP" == "${action}" ]] && echo "_PROTOCOL_LOG")";
+            echo "-A FORWARD -p ${line} -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_PROTOCOL_LOG")";
           } >> "${PI_GUARD_IPTABLES_GENERATED_FILE}"
       elif [[ "ports" == "${type}" ]]; then
         if printf "%s" "${line}" | grep -q "\(:\|,\)" 2> /dev/null; then
           {
-            echo "-A FORWARD -i eth1 -p tcp --match multiport --dports ${line} -j ${action}$([[ "DROP" == "${action}" ]] && echo "_PORT_LOG")";
-            echo "-A FORWARD -i eth1 -p udp --match multiport --dports ${line} -j ${action}$([[ "DROP" == "${action}" ]] && echo "_PORT_LOG")";
+            echo "-A FORWARD -p tcp --match multiport --dports ${line} -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_PORT_LOG")";
+            echo "-A FORWARD -p udp --match multiport --dports ${line} -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_PORT_LOG")";
           } >> "${PI_GUARD_IPTABLES_GENERATED_FILE}"
         else
           {
-            echo "-A FORWARD -i eth1 -p tcp --dport ${line} -j ${action}$([[ "DROP" == "${action}" ]] && echo "_PORT_LOG")";
-            echo "-A FORWARD -i eth1 -p udp --dport ${line} -j ${action}$([[ "DROP" == "${action}" ]] && echo "_PORT_LOG")";
+            echo "-A FORWARD -p tcp --dport ${line} -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_PORT_LOG")";
+            echo "-A FORWARD -p udp --dport ${line} -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_PORT_LOG")";
           } >> "${PI_GUARD_IPTABLES_GENERATED_FILE}"
         fi
       elif [[ "strings" == "${type}" ]]; then
         {
-          echo "-A FORWARD -i eth1 -p tcp -m string --hex-string ${line} --algo bm --dport 80 -j ${action}$([[ "DROP" == "${action}" ]] && echo "_STRING_LOG")";
-          echo "-A FORWARD -i eth1 -p tcp -m string --hex-string ${line} --algo bm --dport 443 -j ${action}$([[ "DROP" == "${action}" ]] && echo "_STRING_LOG")";
-          echo "-A FORWARD -i eth1 -p tcp -m string --hex-string ${line} --algo bm --dport 53 -j ${action}$([[ "DROP" == "${action}" ]] && echo "_STRING_LOG")";
-          echo "-A FORWARD -i eth1 -p tcp -m string --hex-string ${line} --algo bm --dport 5053 -j ${action}$([[ "DROP" == "${action}" ]] && echo "_STRING_LOG")";
-          echo "-A FORWARD -i eth1 -p udp -m string --hex-string ${line} --algo bm --dport 80 -j ${action}$([[ "DROP" == "${action}" ]] && echo "_STRING_LOG")";
-          echo "-A FORWARD -i eth1 -p udp -m string --hex-string ${line} --algo bm --dport 443 -j ${action}$([[ "DROP" == "${action}" ]] && echo "_STRING_LOG")";
-          echo "-A FORWARD -i eth1 -p udp -m string --hex-string ${line} --algo bm --dport 53 -j ${action}$([[ "DROP" == "${action}" ]] && echo "_STRING_LOG")";
-          echo "-A FORWARD -i eth1 -p udp -m string --hex-string ${line} --algo bm --dport 5053 -j ${action}$([[ "DROP" == "${action}" ]] && echo "_STRING_LOG")";
+          echo "-A FORWARD -p tcp -m string --hex-string ${line} --algo bm --dport 80 -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_STRING_LOG")";
+          echo "-A FORWARD -p tcp -m string --hex-string ${line} --algo bm --dport 443 -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_STRING_LOG")";
+          echo "-A FORWARD -p tcp -m string --hex-string ${line} --algo bm --dport 53 -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_STRING_LOG")";
+          echo "-A FORWARD -p tcp -m string --hex-string ${line} --algo bm --dport 5053 -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_STRING_LOG")";
+          echo "-A FORWARD -p udp -m string --hex-string ${line} --algo bm --dport 80 -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_STRING_LOG")";
+          echo "-A FORWARD -p udp -m string --hex-string ${line} --algo bm --dport 443 -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_STRING_LOG")";
+          echo "-A FORWARD -p udp -m string --hex-string ${line} --algo bm --dport 53 -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_STRING_LOG")";
+          echo "-A FORWARD -p udp -m string --hex-string ${line} --algo bm --dport 5053 -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_STRING_LOG")";
         } >> "${PI_GUARD_IPTABLES_GENERATED_FILE}"
       fi
     done < "${listfile}"
     if [[ "ips" == "${type}" ]]; then
         {
-          echo "-A FORWARD -i eth1 --match set --match-set IP_${list^^} src -j ${action}$([[ "DROP" == "${action}" ]] && echo "_IP_LOG")";
-          echo "-A FORWARD -i eth1 --match set --match-set IP_${list^^} dst -j ${action}$([[ "DROP" == "${action}" ]] && echo "_IP_LOG")";
+          echo "-A FORWARD --match set --match-set IP_${list^^} src -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_IP_LOG")";
+          echo "-A FORWARD --match set --match-set IP_${list^^} dst -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_IP_LOG")";
         } >> "${PI_GUARD_IPTABLES_GENERATED_FILE}"
     fi
   fi

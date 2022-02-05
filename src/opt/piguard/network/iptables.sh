@@ -69,8 +69,8 @@ __iptablesGenerateRules() {
     done < "${listfile}"
     if [[ "ips" == "${type}" ]]; then
         {
-          echo "-A FORWARD --match set --match-set IP_${list^^} src -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_IP_LOG")";
-          echo "-A FORWARD --match set --match-set IP_${list^^} dst -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_IP_LOG")";
+          echo "-A FORWARD -p all --match set --match-set IP_${list^^} src -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_IP_LOG")";
+          echo "-A FORWARD -p all --match set --match-set IP_${list^^} dst -j ${action}$([[ "REJECT" == "${action}" ]] && echo "_IP_LOG")";
         } >> "${PI_GUARD_IPTABLES_GENERATED_FILE}"
     fi
   fi
